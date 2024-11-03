@@ -1,11 +1,12 @@
-// food_donation_frontend/src/utils/axios.js
+
 import axios from "axios";
 
-const baseURL =
-  process.env.NODE_ENV === "production" ? "/api" : "http://localhost:5000/api";
+
+const API_BASE_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
 
 const instance = axios.create({
-  baseURL: baseURL,
+  baseURL: `${API_BASE_URL}/api`,
 });
 
 // Add a request interceptor

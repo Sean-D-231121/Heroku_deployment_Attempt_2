@@ -33,11 +33,22 @@ app.use("/api/users", userRoutes);
 const donationRoutes = require("./Routes/DonationRoutes");
 app.use("/api/donations", donationRoutes);
 
+// In server.js
+if (process.env.NODE_ENV === 'production') {
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
+}
+
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../food_donation_frontend/build")));
-  
+  app.use(
+    express.static(path.join(__dirname, "../food_donation_frontend/build"))
+  );
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../food_donation_frontend/build", "index.html"));
+    res.sendFile(
+      path.join(__dirname, "../food_donation_frontend/build", "index.html")
+    );
   });
 }
 
