@@ -33,13 +33,9 @@ app.use("/api/users", userRoutes);
 const donationRoutes = require("./Routes/DonationRoutes");
 app.use("/api/donations", donationRoutes);
 
-// In server.js
-if (process.env.NODE_ENV === 'production') {
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
-}
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is connected!" });
+});
 
 if (process.env.NODE_ENV === "production") {
   app.use(
@@ -51,8 +47,35 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-
-
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://foodshare-connect-ae4125b0ab0a.herokuapp.com"
+        : "http://localhost:3000",
+    credentials: true,
+  })
+);
+// In server.js
+if (process.env.NODE_ENV === 'production') {
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
+}
+// In Backend/server.js
+app.use((err, req, res, next) => {
+  console.error('Error:', {
+    message: err.message,
+    stack: err.stack,
+    timestamp: new Date().toISOString()
+  });
+  res.status(500).json({ 
+    error: process.env.NODE_ENV === 'production' 
+      ? 'Internal server error' 
+      : err.message 
+  });
+});
 
 // Start the server
 app.listen(PORT, () => {
