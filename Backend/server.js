@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
 
@@ -32,6 +33,13 @@ app.use("/api/users", userRoutes);
 const donationRoutes = require("./Routes/DonationRoutes");
 app.use("/api/donations", donationRoutes);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../food_donation_frontend/build")));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../food_donation_frontend/build", "index.html"));
+  });
+}
 
 
 

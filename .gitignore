@@ -10,6 +10,10 @@
 
 # production
 /build
+/Backend/node_modules
+/food_donation_frontend/node_modules
+/food_donation_frontend/.env
+/Backend/public/uploads
 
 # misc
 .DS_Store
@@ -21,3 +25,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
