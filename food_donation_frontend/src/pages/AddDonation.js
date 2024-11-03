@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
+import axios from "../utils/axios";
 
 const AddDonation = () => {
   const [amount, setAmount] = useState("");
@@ -25,10 +25,10 @@ const AddDonation = () => {
     const fetchUsers = async () => {
       try {
         const recipientData = await axios.get(
-          "http://localhost:5000/api/users?role=Recipient"
+          "/users?role=Recipient"
         );
         const volunteerData = await axios.get(
-          "http://localhost:5000/api/users?role=Volunteer"
+          "/users?role=Volunteer"
         );
 
         setRecipients(
@@ -49,7 +49,7 @@ const AddDonation = () => {
     if (!userId) return;
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/users/${userId}`
+        `/users/${userId}`
       );
       const user = response.data;
       setUserImage(
@@ -93,7 +93,7 @@ const AddDonation = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/donations/create",
+        "/donations/create",
         donationData
       );
       if (response.status === 201) {

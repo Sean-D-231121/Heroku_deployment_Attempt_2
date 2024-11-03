@@ -1,6 +1,6 @@
 // TopDonorsWidget.js
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../utils/axios";
 import "./TopDonorWidget.css";
 
 const TopDonorsWidget = () => {
@@ -13,7 +13,7 @@ const TopDonorsWidget = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:5000/api/donations/top-donors"
+          "/donations/top-donors"
         );
 
         // Map over the donors and construct proper image URLs

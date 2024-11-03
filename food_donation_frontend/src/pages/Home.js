@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopDonorsWidget from "../components/TopDonorsWidget";
-
+import axios from "../utils/axios";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -58,22 +58,31 @@ const Home = () => {
   const [totalDonations, setTotalDonations] = useState(0);
 
   useEffect(() => {
-    // Fetch monthly donation totals for accepted donations
-    fetch("http://localhost:5000/api/donations/monthlyTotals?status=accepted")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        // Fetch monthly donation totals
+        const monthlyResponse = await axios.get("/donations/monthlyTotals", {
+          params: { status: "accepted" },
+        });
+
         const amounts = Array(12).fill(0);
-        data.forEach((item) => (amounts[item._id - 1] = item.totalAmount));
+        monthlyResponse.data.forEach(
+          (item) => (amounts[item._id - 1] = item.totalAmount)
+        );
         setMonthlyDonations(amounts);
         setTotalDonations(amounts.reduce((sum, amount) => sum + amount, 0));
-      })
-      .catch((error) => console.error("Error fetching donation data:", error));
 
-    // Fetch top donors with their images (only for accepted donations)
-    fetch("http://localhost:5000/api/donations/top-donors?status=accepted")
-      .then((response) => response.json())
-      .then((data) => setTopDonors(data))
-      .catch((error) => console.error("Error fetching top donors:", error));
+        // Fetch top donors
+        const donorsResponse = await axios.get("/donations/top-donors", {
+          params: { status: "accepted" },
+        });
+        setTopDonors(donorsResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Bar chart configuration

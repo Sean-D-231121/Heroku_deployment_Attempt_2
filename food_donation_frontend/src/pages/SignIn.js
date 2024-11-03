@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../utils/axios";
 
 const SignIn = ({ setUser }) => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const SignIn = ({ setUser }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/signin",
+        "/users/signin",
         {
           email: formData.email,
           password: formData.password,

@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Profile.css";
-import axios from "axios";
+import axios from "../utils/axios";
 
 ChartJS.register(
   CategoryScale,
@@ -53,7 +53,7 @@ const DonationManagement = ({ donation, user, onStatusUpdate }) => {
   const handleStatusChange = async (status) => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/donations/status/${donation.donationid}`,
+        `/donations/status/${donation.donationid}`,
         {
           status,
           userRole: user.role,

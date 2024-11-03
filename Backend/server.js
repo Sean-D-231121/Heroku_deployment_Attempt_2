@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public")); // Serve static files from 'public'
-
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 // Verify JWT secret is loaded
 
 mongoose

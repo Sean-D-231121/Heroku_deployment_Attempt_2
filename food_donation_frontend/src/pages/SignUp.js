@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+import axios from "../utils/axios";
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -41,7 +41,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "/users/register",
         formDataObj,
         {
           headers: { "Content-Type": "multipart/form-data" },
