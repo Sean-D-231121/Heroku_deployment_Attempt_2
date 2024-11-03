@@ -11,7 +11,6 @@
 /coverage
 
 # production
-/build
 /food_donation_frontend/build
 
 # misc
@@ -25,6 +24,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# dotenv environment variables file
 .env
 
 
