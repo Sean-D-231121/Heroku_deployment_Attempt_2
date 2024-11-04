@@ -47,15 +47,16 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://foodshare-connect-ae4125b0ab0a.herokuapp.com"
-        : "http://localhost:3000",
-    credentials: true,
-  })
-);
+if (!process.env.MONGO_URI) {
+  console.error("MONGO_URI is not defined in the environment variables");
+  process.exit(1);
+}
+app.use(cors({
+  origin: process.env.NODE_ENV === "production" 
+    ? "https://foodshare-connect-ae4125b0ab0a.herokuapp.com" 
+    : "http://localhost:3000",
+  credentials: true
+}));
 // In server.js
 if (process.env.NODE_ENV === 'production') {
   app.use((err, req, res, next) => {
@@ -63,19 +64,8 @@ if (process.env.NODE_ENV === 'production') {
     res.status(500).send('Something broke!');
   });
 }
-// In Backend/server.js
-app.use((err, req, res, next) => {
-  console.error('Error:', {
-    message: err.message,
-    stack: err.stack,
-    timestamp: new Date().toISOString()
-  });
-  res.status(500).json({ 
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message 
-  });
-});
+
+
 
 // Start the server
 app.listen(PORT, () => {
